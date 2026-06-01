@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অফিস হাজিরা ব্যবস্থাপনা</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #1648c8;
+    --primary-2: #0f3494;
+    --primary-light: #dce8ff;
+    --primary-xlight: #f0f5ff;
+    --accent: #00c9a7;
+    --accent-light: #d0f8f1;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --success: #059669;
+    --success-light: #d1fae5;
+    --neutral: #64748b;
+    --bg: #f1f5fb;
+    --bg2: #e8eef8;
+    --surface: #ffffff;
+    --surface2: #f8faff;
+    --border: #dde5f5;
+    --border2: #c8d5ee;
+    --text: #0f172a;
+    --text2: #475569;
+    --text3: #94a3b8;
+    --radius: 14px;
+    --radius-sm: 9px;
+    --radius-lg: 20px;
+    --shadow: 0 2px 16px rgba(22,72,200,0.07);
+    --shadow-md: 0 4px 24px rgba(22,72,200,0.11);
+    --shadow-lg: 0 8px 40px rgba(22,72,200,0.16);
+    --transition: 0.18s cubic-bezier(.4,0,.2,1);
+  }
+
+  body {
+    font-family: 'Hind Siliguri', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ══════ SCROLLBAR ══════ */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
+
+  /* ══════ HEADER ══════ */
+  .header {
+    background: linear-gradient(135deg, #1648c8 0%, #0c2e9e 45%, #071e6e 100%);
+    padding: 22px 18px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -30px;
+    width: 180px; height: 180px;
+    background: rgba(0,201,167,0.08);
+    border-radius: 50%;
+  }
+  .header-orb {
+    position: absolute;
+    top: 20px; left: 40%;
+    width: 120px; height: 120px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+  .header-icon {
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .header-title { font-size: 19px; font-weight: 700; color: #fff; letter-spacing: 0.2px; }
+  .header-sub { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 1px; }
+  .header-date-pill {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding: 7px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+    text-align: right;
+    position: relative;
+    z-index: 1;
+  }
+  .header-date-pill .day { font-size: 10px; color: rgba(255,255,255,0.65); }
+
+  /* ══════ FLOATING CARD ══════ */
+  .float-card {
+    background: var(--surface);
+    margin: 0 14px;
+    margin-top: -38px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+    animation: floatIn 0.4s cubic-bezier(.4,0,.2,1) both;
+  }
+  @keyframes floatIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  /* ══════ TABS ══════ */
+  .tab-bar {
+    display: flex;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 13px 6px 11px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all var(--transition);
+    user-select: none;
+    letter-spacing: 0.2px;
+  }
+  .tab-btn i { font-size: 19px; }
+  .tab-btn:hover { color: var(--primary); background: var(--primary-xlight); }
+  .tab-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background: var(--primary-xlight);
+  }
+
+  /* ══════ PAGES ══════ */
+  .page { display: none; padding: 16px; }
+  .page.active { display: block; animation: fadeSlide 0.22s ease both; }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateX(6px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ══════ STATS ROW ══════ */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .stat-chip {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 14px 8px 12px;
+    text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-chip::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+  }
+  .stat-chip.present::before { background: var(--success); }
+  .stat-chip.absent::before  { background: var(--danger); }
+  .stat-chip.late::before    { background: var(--warning); }
+  .stat-num { font-size: 26px; font-weight: 700; line-height: 1.1; font-family: 'JetBrains Mono', monospace; }
+  .stat-chip.present .stat-num { color: var(--success); }
+  .stat-chip.absent  .stat-num { color: var(--danger); }
+  .stat-chip.late    .stat-num { color: var(--warning); }
+  .stat-label { font-size: 11px; color: var(--text2); margin-top: 3px; font-weight: 500; }
+
+  /* ══════ DATE NAV ══════ */
+  .date-nav {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 9px 12px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .date-nav input[type="date"] {
+    flex: 1;
+    border: none; outline: none;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    background: transparent;
+    cursor: pointer;
+  }
+  .icon-btn {
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text2);
+    font-size: 16px;
+    transition: all var(--transition);
+    flex-shrink: 0;
+  }
+  .icon-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); transform: scale(1.05); }
+  .icon-btn:active { transform: scale(0.95); }
+
+  /* ══════ ATTENDANCE CARDS ══════ */
+  .emp-list { display: flex; flex-direction: column; gap: 12px; }
+  .emp-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: box-shadow var(--transition), transform var(--transition);
+  }
+  .emp-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+  .emp-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 14px 12px;
+  }
+  .avatar {
+    width: 46px; height: 46px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 800;
+    flex-shrink: 0;
+    letter-spacing: -0.5px;
+  }
+  .emp-info { flex: 1; min-width: 0; }
+  .emp-name { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .emp-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+  .status-badge {
+    font-size: 11px; font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 30px;
+    flex-shrink: 0;
+    letter-spacing: 0.3px;
+  }
+  .badge-present  { background: var(--success-light); color: var(--success); }
+  .badge-absent   { background: var(--danger-light);  color: var(--danger);  }
+  .badge-late     { background: var(--warning-light); color: var(--warning); }
+  .badge-holiday  { background: var(--bg2); color: var(--text2); }
+  .badge-none     { background: var(--bg2); color: var(--text3); }
+
+  .emp-times {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--border);
+  }
+  .time-block {
+    padding: 11px 14px;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .time-block:first-child { border-right: 1px solid var(--border); }
+  .time-label {
+    font-size: 11px; color: var(--text3); font-weight: 600;
+    display: flex; align-items: center; gap: 4px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .time-label i { font-size: 13px; }
+  .time-input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid var(--border);
+    outline: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    background: transparent;
+    padding: 3px 0;
+    transition: border-color var(--transition);
+  }
+  .time-input:focus { border-bottom-color: var(--primary); }
+
+  .emp-actions {
+    display: flex; gap: 7px;
+    padding: 10px 12px;
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+  }
+  .action-btn {
+    flex: 1;
+    padding: 8px 4px;
+    border-radius: var(--radius-sm);
+    font-size: 11px; font-weight: 700;
+    cursor: pointer;
+    border: 1.5px solid;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    transition: all var(--transition);
+    font-family: 'Hind Siliguri', sans-serif;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .action-btn:active { transform: scale(0.95); }
+  .btn-ci  { background: var(--success-light); color: var(--success); border-color: #a7f3d0; }
+  .btn-ci:hover  { background: var(--success); color: #fff; }
+  .btn-co  { background: var(--warning-light); color: var(--warning); border-color: #fcd34d; }
+  .btn-co:hover  { background: var(--warning); color: #fff; }
+  .btn-abs { background: var(--danger-light);  color: var(--danger);  border-color: #fca5a5; }
+  .btn-abs:hover { background: var(--danger); color: #fff; }
+  .btn-hol { background: var(--bg2); color: var(--text2); border-color: var(--border2); }
+  .btn-hol:hover { background: var(--text2); color: #fff; }
+
+  /* ══════ SECTION HEADER ══════ */
+  .sec-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .sec-title { font-size: 16px; font-weight: 700; }
+
+  /* ══════ ADD BUTTON ══════ */
+  .add-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 9px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 700;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'Hind Siliguri', sans-serif;
+    transition: all var(--transition);
+    box-shadow: 0 2px 8px rgba(22,72,200,0.3);
+  }
+  .add-btn:hover { background: var(--primary-2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(22,72,200,0.4); }
+  .add-btn:active { transform: scale(0.97); }
+
+  /* ══════ EMPLOYEE MGMT CARDS ══════ */
+  .mgmt-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 14px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 10px;
+    transition: all var(--transition);
+  }
+  .mgmt-card:hover { box-shadow: var(--shadow-md); }
+  .mgmt-info { flex: 1; min-width: 0; }
+  .mgmt-name { font-size: 15px; font-weight: 700; }
+  .mgmt-role { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .mgmt-btns { display: flex; gap: 8px; }
+  .btn-edit {
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--primary-light);
+    background: var(--primary-xlight);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--primary); font-size: 16px;
+    transition: all var(--transition);
+  }
+  .btn-edit:hover { background: var(--primary); color: #fff; }
+  .btn-del {
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--danger-light);
+    background: var(--danger-light);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--danger); font-size: 16px;
+    transition: all var(--transition);
+  }
+  .btn-del:hover { background: var(--danger); color: #fff; }
+
+  /* ══════ HOLIDAY / WEEKDAY ══════ */
+  .config-box {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .config-box-title {
+    font-size: 14px; font-weight: 700;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--primary);
+  }
+  .config-box-title i { font-size: 18px; }
+  .day-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; }
+  .day-chip {
+    padding: 9px 3px;
+    text-align: center;
+    border-radius: var(--radius-sm);
+    font-size: 11px; font-weight: 700;
+    cursor: pointer;
+    border: 2px solid var(--border);
+    background: var(--surface2);
+    color: var(--text2);
+    transition: all var(--transition);
+    user-select: none;
+    letter-spacing: 0.2px;
+  }
+  .day-chip.selected { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .day-chip:hover:not(.selected) { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+
+  .holiday-add-row { display: flex; gap: 8px; margin-top: 14px; }
+  .holiday-add-row input {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-family: 'Hind Siliguri', sans-serif;
+    outline: none;
+    background: var(--surface2);
+    color: var(--text);
+    transition: border-color var(--transition);
+  }
+  .holiday-add-row input:focus { border-color: var(--primary); background: var(--surface); }
+  .holiday-add-row input[type="date"] { width: 140px; flex-shrink: 0; }
+  .holiday-add-row input[type="text"] { flex: 1; min-width: 0; }
+  .holiday-add-row button {
+    padding: 10px 14px;
+    background: var(--primary); color: #fff;
+    border: none; border-radius: var(--radius-sm);
+    font-size: 14px; cursor: pointer;
+    transition: all var(--transition);
+    flex-shrink: 0;
+  }
+  .holiday-add-row button:hover { background: var(--primary-2); }
+
+  .holiday-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    margin-bottom: 8px;
+    transition: all var(--transition);
+  }
+  .holiday-item:hover { box-shadow: var(--shadow); }
+  .holiday-date { font-size: 13px; font-weight: 700; color: var(--primary); min-width: 95px; font-family: 'JetBrains Mono', monospace; }
+  .holiday-name { flex: 1; font-size: 13px; font-weight: 500; }
+  .hol-del {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    border: 1px solid var(--danger-light);
+    background: var(--danger-light);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--danger); font-size: 14px;
+    transition: all var(--transition); flex-shrink: 0;
+  }
+  .hol-del:hover { background: var(--danger); color: #fff; }
+  .empty-msg { text-align: center; color: var(--text3); font-size: 13px; padding: 20px 0; }
+
+  /* ══════ REPORT ══════ */
+  .report-header-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .month-sel {
+    flex: 1; padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 600;
+    font-family: 'Hind Siliguri', sans-serif;
+    outline: none;
+    background: var(--surface2);
+    color: var(--text);
+    cursor: pointer;
+  }
+  .report-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+  .report-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+    background: var(--surface);
+  }
+  .report-table th {
+    padding: 11px 10px;
+    text-align: left;
+    font-size: 10px; font-weight: 700;
+    color: var(--text2);
+    text-transform: uppercase; letter-spacing: 0.7px;
+    background: var(--surface2);
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .report-table td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .report-table tr:last-child td { border-bottom: none; }
+  .report-table tbody tr:hover td { background: var(--primary-xlight); }
+  .pct-bar { height: 5px; background: var(--bg2); border-radius: 5px; margin-top: 5px; min-width: 60px; overflow: hidden; }
+  .pct-fill { height: 100%; border-radius: 5px; transition: width 0.5s ease; }
+
+  /* ══════ MODAL ══════ */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(15,23,42,0.55);
+    z-index: 100;
+    align-items: flex-end; justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+  .overlay.show { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    width: 100%; max-width: 500px;
+    padding: 22px 20px 28px;
+    animation: slideUp 0.3s cubic-bezier(.4,0,.2,1) both;
+    max-height: 90vh; overflow-y: auto;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+  @media (min-width: 540px) {
+    .overlay { align-items: center; }
+    .modal { border-radius: var(--radius-lg); max-height: 85vh; }
+  }
+  .modal-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 22px;
+  }
+  .modal-title { font-size: 18px; font-weight: 800; }
+  .modal-close {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--text2); font-size: 18px;
+    transition: all var(--transition);
+  }
+  .modal-close:hover { background: var(--danger-light); color: var(--danger); }
+
+  .fgroup { margin-bottom: 16px; }
+  .flabel { font-size: 13px; font-weight: 700; color: var(--text2); margin-bottom: 7px; display: block; }
+  .finput {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px; font-family: 'Hind Siliguri', sans-serif;
+    outline: none; background: var(--surface2); color: var(--text);
+    transition: all var(--transition);
+  }
+  .finput:focus { border-color: var(--primary); background: var(--surface); box-shadow: 0 0 0 3px rgba(22,72,200,0.1); }
+
+  .color-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .color-opt {
+    width: 38px; height: 38px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 800; cursor: pointer;
+    border: 3px solid transparent;
+    transition: all var(--transition);
+  }
+  .color-opt.sel { border-color: var(--primary); transform: scale(1.18); box-shadow: 0 2px 8px rgba(22,72,200,0.3); }
+  .color-opt:hover:not(.sel) { transform: scale(1.1); }
+
+  .modal-actions { display: flex; gap: 10px; margin-top: 22px; }
+  .modal-actions button {
+    flex: 1; padding: 13px;
+    border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    font-family: 'Hind Siliguri', sans-serif;
+    transition: all var(--transition);
+  }
+  .btn-cancel { background: var(--surface2); color: var(--text2); border: 1.5px solid var(--border); }
+  .btn-cancel:hover { background: var(--bg2); }
+  .btn-save { background: var(--primary); color: #fff; border: none; box-shadow: 0 2px 8px rgba(22,72,200,0.3); }
+  .btn-save:hover { background: var(--primary-2); }
+  .btn-danger { background: var(--danger); color: #fff; border: none; }
+  .btn-danger:hover { background: #b91c1c; }
+
+  .del-modal-body { text-align: center; padding: 8px 0; }
+  .del-icon { font-size: 48px; margin-bottom: 14px; display: block; }
+  .del-msg { color: var(--text2); font-size: 14px; line-height: 1.6; margin-bottom: 4px; }
+
+  /* ══════ TOAST ══════ */
+  .toast {
+    position: fixed; bottom: 90px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text); color: #fff;
+    padding: 12px 22px; border-radius: 30px;
+    font-size: 13px; font-weight: 600;
+    opacity: 0; pointer-events: none;
+    transition: all 0.3s cubic-bezier(.4,0,.2,1);
+    z-index: 999; white-space: nowrap;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--success); }
+  .toast.danger  { background: var(--danger); }
+  .toast.warning { background: var(--warning); }
+
+  /* ══════ BOTTOM NAV ══════ */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex; z-index: 50;
+    box-shadow: 0 -4px 24px rgba(22,72,200,0.1);
+  }
+  .nav-item {
+    flex: 1; padding: 10px 0 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    cursor: pointer; color: var(--text3);
+    font-size: 10px; font-weight: 700;
+    transition: all var(--transition);
+    user-select: none;
+    letter-spacing: 0.3px;
+  }
+  .nav-item i { font-size: 22px; }
+  .nav-item.active { color: var(--primary); }
+  .nav-item:hover { color: var(--primary); }
+  .nav-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--primary); margin: 0 auto;
+    opacity: 0; transition: opacity var(--transition);
+  }
+  .nav-item.active .nav-dot { opacity: 1; }
+
+  /* ══════ RESPONSIVE ══════ */
+  @media (max-width: 380px) {
+    .emp-actions { flex-wrap: wrap; }
+    .action-btn { min-width: calc(50% - 4px); }
+    .stats-row { gap: 7px; }
+    .stat-num { font-size: 22px; }
+  }
+  @media (min-width: 700px) {
+    body { max-width: 680px; margin: 0 auto; }
+    .emp-list { display: grid; grid-template-columns: repeat(2,1fr); }
+    .stats-row { grid-template-columns: repeat(3,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<div class="header">
+  <div class="header-orb"></div>
+  <div class="header-top">
+    <div class="header-brand">
+      <div class="header-icon">🏢</div>
+      <div>
+        <div class="header-title">অফিস হাজিরা</div>
+        <div class="header-sub">Attendance Management</div>
+      </div>
+    </div>
+    <div class="header-date-pill">
+      <div class="day" id="hdrDay"></div>
+      <div id="hdrDate"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ FLOAT CARD ═══════════════════════ -->
+<div class="float-card">
+  <div class="tab-bar">
+    <div class="tab-btn active" onclick="switchTab('attendance',0)"><i class="ti ti-calendar-check"></i>হাজিরা</div>
+    <div class="tab-btn" onclick="switchTab('employees',1)"><i class="ti ti-users"></i>কর্মী</div>
+    <div class="tab-btn" onclick="switchTab('holidays',2)"><i class="ti ti-calendar-off"></i>ছুটি</div>
+    <div class="tab-btn" onclick="switchTab('report',3)"><i class="ti ti-chart-bar"></i>রিপোর্ট</div>
+  </div>
+
+  <!-- ──────── ATTENDANCE PAGE ──────── -->
+  <div class="page active" id="pg-attendance">
+    <div class="stats-row">
+      <div class="stat-chip present"><div class="stat-num" id="sP">0</div><div class="stat-label">উপস্থিত</div></div>
+      <div class="stat-chip absent"><div class="stat-num" id="sA">0</div><div class="stat-label">অনুপস্থিত</div></div>
+      <div class="stat-chip late"><div class="stat-num" id="sL">0</div><div class="stat-label">দেরিতে</div></div>
+    </div>
+
+    <div class="date-nav">
+      <button class="icon-btn" onclick="chgDate(-1)"><i class="ti ti-chevron-left"></i></button>
+      <input type="date" id="attDate" onchange="renderAtt()">
+      <button class="icon-btn" onclick="chgDate(1)"><i class="ti ti-chevron-right"></i></button>
+      <button class="icon-btn" title="আজ" onclick="goToday()"><i class="ti ti-home"></i></button>
+    </div>
+
+    <div class="emp-list" id="attList"></div>
+  </div>
+
+  <!-- ──────── EMPLOYEES PAGE ──────── -->
+  <div class="page" id="pg-employees">
+    <div class="sec-header">
+      <div class="sec-title">কর্মীদের তালিকা</div>
+      <button class="add-btn" onclick="openAddEmp()"><i class="ti ti-user-plus" style="font-size:16px"></i>নতুন কর্মী</button>
+    </div>
+    <div id="empMgmt"></div>
+  </div>
+
+  <!-- ──────── HOLIDAYS PAGE ──────── -->
+  <div class="page" id="pg-holidays">
+    <div class="config-box">
+      <div class="config-box-title"><i class="ti ti-calendar-week"></i>সাপ্তাহিক ছুটির দিন বেছে নিন</div>
+      <div class="day-grid" id="dayGrid"></div>
+    </div>
+
+    <div class="sec-header" style="margin-top:4px">
+      <div class="sec-title">বিশেষ ও সরকারি ছুটি</div>
+    </div>
+    <div class="config-box" style="padding-bottom:14px">
+      <div class="holiday-add-row">
+        <input type="date" id="hDate">
+        <input type="text" id="hName" placeholder="ছুটির নাম লিখুন...">
+        <button onclick="addHoliday()"><i class="ti ti-plus"></i></button>
+      </div>
+    </div>
+    <div id="holList"></div>
+  </div>
+
+  <!-- ──────── REPORT PAGE ──────── -->
+  <div class="page" id="pg-report">
+    <div class="report-header-row">
+      <button class="icon-btn" onclick="chgMonth(-1)"><i class="ti ti-chevron-left"></i></button>
+      <select class="month-sel" id="repMonSel" onchange="renderReport()"></select>
+      <button class="icon-btn" onclick="chgMonth(1)"><i class="ti ti-chevron-right"></i></button>
+    </div>
+    <div class="report-wrap">
+      <table class="report-table" id="repTable"></table>
+    </div>
+  </div>
+</div><!-- /float-card -->
+
+<!-- ═══════════════════════ BOTTOM NAV ═══════════════════════ -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="switchTab('attendance',0)"><i class="ti ti-calendar-check"></i><span>হাজিরা</span><div class="nav-dot"></div></div>
+  <div class="nav-item" onclick="switchTab('employees',1)"><i class="ti ti-users"></i><span>কর্মী</span><div class="nav-dot"></div></div>
+  <div class="nav-item" onclick="switchTab('holidays',2)"><i class="ti ti-calendar-off"></i><span>ছুটি</span><div class="nav-dot"></div></div>
+  <div class="nav-item" onclick="switchTab('report',3)"><i class="ti ti-chart-bar"></i><span>রিপোর্ট</span><div class="nav-dot"></div></div>
+</div>
+
+<!-- ═══════════════════════ MODAL: ADD/EDIT EMP ═══════════════════════ -->
+<div class="overlay" id="empOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="empMTitle">নতুন কর্মী যোগ</div>
+      <div class="modal-close" onclick="closeModal('empOverlay')"><i class="ti ti-x"></i></div>
+    </div>
+    <div class="fgroup">
+      <label class="flabel">পূর্ণ নাম *</label>
+      <input class="finput" id="fName" placeholder="কর্মীর নাম লিখুন">
+    </div>
+    <div class="fgroup">
+      <label class="flabel">পদবি / বিভাগ</label>
+      <input class="finput" id="fRole" placeholder="যেমন: হিসাবরক্ষক, ম্যানেজার">
+    </div>
+    <div class="fgroup">
+      <label class="flabel">অফিস শুরুর সময়</label>
+      <input class="finput" id="fTime" type="time" value="09:00">
+    </div>
+    <div class="fgroup">
+      <label class="flabel">অ্যাভাটার রঙ</label>
+      <div class="color-grid" id="colorGrid"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('empOverlay')">বাতিল</button>
+      <button class="btn-save" onclick="saveEmp()">সংরক্ষণ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ MODAL: DELETE CONFIRM ═══════════════════════ -->
+<div class="overlay" id="delOverlay">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-head"><div class="modal-title">নিশ্চিত করুন</div><div class="modal-close" onclick="closeModal('delOverlay')"><i class="ti ti-x"></i></div></div>
+    <div class="del-modal-body">
+      <span class="del-icon">⚠️</span>
+      <div style="font-size:16px;font-weight:700;margin-bottom:8px">কর্মী মুছে ফেলবেন?</div>
+      <div class="del-msg">এই কর্মীর সমস্ত হাজিরা তথ্যও স্থায়ীভাবে মুছে যাবে।</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('delOverlay')">না, রাখুন</button>
+      <button class="btn-danger" onclick="confirmDel()">হ্যাঁ, মুছুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════ SCRIPT ═══════════════════════ -->
+<script>
+/* ── COLORS ── */
+const COLORS = [
+  {bg:'#dbeafe',fg:'#1e40af'},{bg:'#d1fae5',fg:'#065f46'},{bg:'#fce7f3',fg:'#9d174d'},
+  {bg:'#fef3c7',fg:'#92400e'},{bg:'#ede9fe',fg:'#5b21b6'},{bg:'#ffedd5',fg:'#9a3412'},
+  {bg:'#f1f5f9',fg:'#334155'},{bg:'#cffafe',fg:'#155e75'},{bg:'#fef9c3',fg:'#713f12'},
+];
+const DAYS = ['রবি','সোম','মঙ্গল','বুধ','বৃহস্পতি','শুক্র','শনি'];
+const MONTHS_BN = ['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+
+/* ── STATE ── */
+const S = {
+  employees: [
+    {id:1, name:'রহিম উদ্দিন',   role:'সিনিয়র অ্যাকাউন্ট্যান্ট', startTime:'09:00', ci:0},
+    {id:2, name:'করিম সাহেব',    role:'এইচআর ম্যানেজার',           startTime:'09:00', ci:1},
+    {id:3, name:'সুমাইয়া বেগম', role:'রিসেপশনিস্ট',               startTime:'09:00', ci:2},
+    {id:4, name:'তারেক আহমেদ',  role:'আইটি অফিসার',               startTime:'10:00', ci:3},
+    {id:5, name:'নাজমা খাতুন',  role:'অফিস সহকারী',               startTime:'09:00', ci:4},
+  ],
+  att: {},
+  weekOff: [5,6],
+  pubHol: [],
+  editId: null,
+  delId:  null,
+  selColor: 0,
+  repYear:  new Date().getFullYear(),
+  repMonth: new Date().getMonth(),
+};
+
+/* ── HELPERS ── */
+function todayStr() { return fmtD(new Date()); }
+function fmtD(d) { return d.toISOString().split('T')[0]; }
+function getAtt(eid,ds){ return S.att[eid+'_'+ds] || {status:'',ci:'',co:''}; }
+function setAtt(eid,ds,data){ const k=eid+'_'+ds; S.att[k]={...getAtt(eid,ds),...data}; renderAtt(); }
+function isOff(ds){
+  const dow=new Date(ds).getDay();
+  if(S.weekOff.includes(dow)) return true;
+  return S.pubHol.some(h=>h.date===ds);
+}
+function initials(name){ return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function nowTime(){ const n=new Date(); return n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0'); }
+
+/* ── HEADER DATE ── */
+(function(){
+  const now=new Date();
+  document.getElementById('hdrDay').textContent=DAYS[now.getDay()];
+  document.getElementById('hdrDate').textContent=now.toLocaleDateString('bn-BD',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('attDate').value=todayStr();
+})();
+
+/* ── TAB SWITCH ── */
+const PAGES=['attendance','employees','holidays','report'];
+function switchTab(name,idx){
+  PAGES.forEach(p=>{ document.getElementById('pg-'+p).classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('pg-'+name).classList.add('active');
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  document.querySelectorAll('.nav-item')[idx].classList.add('active');
+  if(name==='employees') renderEmpMgmt();
+  if(name==='holidays')  { renderDayGrid(); renderHolList(); }
+  if(name==='report')    { initRepMonths(); renderReport(); }
+}
+
+/* ══════════════════════════════════════
+   ATTENDANCE
+══════════════════════════════════════ */
+function chgDate(d){
+  const el=document.getElementById('attDate');
+  const cur=new Date(el.value);
+  cur.setDate(cur.getDate()+d);
+  el.value=fmtD(cur);
+  renderAtt();
+}
+function goToday(){ document.getElementById('attDate').value=todayStr(); renderAtt(); }
+
+function renderAtt(){
+  const ds=document.getElementById('attDate').value;
+  const el=document.getElementById('attList');
+  let html=''; let p=0,a=0,l=0;
+  S.employees.forEach(emp=>{
+    const att=getAtt(emp.id,ds);
+    const offDay=isOff(ds);
+    const status=offDay && !att.status ? 'holiday' : att.status;
+    const c=COLORS[emp.ci%COLORS.length];
+    const ini=initials(emp.name);
+    if(status==='present') p++;
+    else if(status==='late'){ p++; l++; }
+    else if(status==='absent') a++;
+    let badgeTxt='অপেক্ষমাণ', badgeCls='badge-none';
+    if(status==='present'){ badgeTxt='উপস্থিত'; badgeCls='badge-present'; }
+    else if(status==='late'){ badgeTxt='দেরিতে'; badgeCls='badge-late'; }
+    else if(status==='absent'){ badgeTxt='অনুপস্থিত'; badgeCls='badge-absent'; }
+    else if(status==='holiday'){ badgeTxt='ছুটি'; badgeCls='badge-holiday'; }
+    html+=`
+    <div class="emp-card" id="ec${emp.id}">
+      <div class="emp-header">
+        <div class="avatar" style="background:${c.bg};color:${c.fg}">${ini}</div>
+        <div class="emp-info">
+          <div class="emp-name">${emp.name}</div>
+          <div class="emp-meta">${emp.role} &bull; শুরু ${emp.startTime}</div>
+        </div>
+        <span class="status-badge ${badgeCls}">${badgeTxt}</span>
+      </div>
+      <div class="emp-times">
+        <div class="time-block">
+          <div class="time-label"><i class="ti ti-login"></i>আগমন</div>
+          <input type="time" class="time-input" value="${att.ci||''}" onchange="manualTime(${emp.id},'${ds}','ci',this.value)">
+        </div>
+        <div class="time-block">
+          <div class="time-label"><i class="ti ti-logout"></i>প্রস্থান</div>
+          <input type="time" class="time-input" value="${att.co||''}" onchange="manualTime(${emp.id},'${ds}','co',this.value)">
+        </div>
+      </div>
+      <div class="emp-actions">
+        <button class="action-btn btn-ci"  onclick="doCI(${emp.id},'${ds}')"><i class="ti ti-login"></i>চেক-ইন</button>
+        <button class="action-btn btn-co"  onclick="doCO(${emp.id},'${ds}')"><i class="ti ti-logout"></i>চেক-আউট</button>
+        <button class="action-btn btn-abs" onclick="doAbs(${emp.id},'${ds}')"><i class="ti ti-x"></i>অনুপস্থিত</button>
+        <button class="action-btn btn-hol" onclick="doHol(${emp.id},'${ds}')"><i class="ti ti-umbrella"></i>ছুটি</button>
+      </div>
+    </div>`;
+  });
+  el.innerHTML=html;
+  document.getElementById('sP').textContent=p;
+  document.getElementById('sA').textContent=a;
+  document.getElementById('sL').textContent=l;
+}
+
+function doCI(eid,ds){
+  const t=nowTime();
+  const emp=S.employees.find(e=>e.id===eid);
+  const st=t>emp.startTime?'late':'present';
+  setAtt(eid,ds,{ci:t,status:st});
+  toast('✅ '+emp.name+' — চেক-ইন '+t,'success');
+}
+function doCO(eid,ds){
+  const t=nowTime();
+  const emp=S.employees.find(e=>e.id===eid);
+  setAtt(eid,ds,{co:t});
+  toast('👋 '+emp.name+' — চেক-আউট '+t,'success');
+}
+function doAbs(eid,ds){ const emp=S.employees.find(e=>e.id===eid); setAtt(eid,ds,{status:'absent',ci:'',co:''}); toast('❌ '+emp.name+' — অনুপস্থিত চিহ্নিত','warning'); }
+function doHol(eid,ds){ const emp=S.employees.find(e=>e.id===eid); setAtt(eid,ds,{status:'holiday',ci:'',co:''}); toast('🌴 '+emp.name+' — ছুটি চিহ্নিত'); }
+function manualTime(eid,ds,field,val){
+  const emp=S.employees.find(e=>e.id===eid);
+  const upd={[field]:val};
+  if(field==='ci'&&val){ upd.status=val>emp.startTime?'late':'present'; }
+  const k=eid+'_'+ds; S.att[k]={...getAtt(eid,ds),...upd};
+  renderAtt();
+}
+
+/* ══════════════════════════════════════
+   EMPLOYEE MANAGEMENT
+══════════════════════════════════════ */
+function renderEmpMgmt(){
+  let html='';
+  S.employees.forEach(emp=>{
+    const c=COLORS[emp.ci%COLORS.length];
+    html+=`<div class="mgmt-card">
+      <div class="avatar" style="background:${c.bg};color:${c.fg}">${initials(emp.name)}</div>
+      <div class="mgmt-info">
+        <div class="mgmt-name">${emp.name}</div>
+        <div class="mgmt-role">${emp.role} &bull; শুরু ${emp.startTime}</div>
+      </div>
+      <div class="mgmt-btns">
+        <div class="btn-edit" onclick="editEmp(${emp.id})" title="সম্পাদনা"><i class="ti ti-edit"></i></div>
+        <div class="btn-del"  onclick="askDel(${emp.id})"  title="মুছুন"><i class="ti ti-trash"></i></div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('empMgmt').innerHTML=html||'<div class="empty-msg">কোনো কর্মী নেই</div>';
+}
+
+function openAddEmp(){
+  S.editId=null;
+  document.getElementById('empMTitle').textContent='নতুন কর্মী যোগ করুন';
+  document.getElementById('fName').value='';
+  document.getElementById('fRole').value='';
+  document.getElementById('fTime').value='09:00';
+  S.selColor=0;
+  renderColorGrid();
+  showModal('empOverlay');
+}
+function editEmp(id){
+  S.editId=id;
+  const emp=S.employees.find(e=>e.id===id);
+  document.getElementById('empMTitle').textContent='কর্মী তথ্য সম্পাদনা';
+  document.getElementById('fName').value=emp.name;
+  document.getElementById('fRole').value=emp.role;
+  document.getElementById('fTime').value=emp.startTime;
+  S.selColor=emp.ci||0;
+  renderColorGrid();
+  showModal('empOverlay');
+}
+function renderColorGrid(){
+  document.getElementById('colorGrid').innerHTML=COLORS.map((c,i)=>`
+    <div class="color-opt ${i===S.selColor?'sel':''}" style="background:${c.bg};color:${c.fg}" onclick="pickColor(${i})">A</div>
+  `).join('');
+}
+function pickColor(i){ S.selColor=i; renderColorGrid(); }
+function saveEmp(){
+  const name=document.getElementById('fName').value.trim();
+  const role=document.getElementById('fRole').value.trim()||'কর্মী';
+  const st=document.getElementById('fTime').value;
+  if(!name){ toast('নাম লিখুন','danger'); return; }
+  if(S.editId){
+    const emp=S.employees.find(e=>e.id===S.editId);
+    emp.name=name; emp.role=role; emp.startTime=st; emp.ci=S.selColor;
+    toast('✅ কর্মী তথ্য আপডেট হয়েছে','success');
+  } else {
+    S.employees.push({id:Date.now(),name,role,startTime:st,ci:S.selColor});
+    toast('✅ '+name+' যোগ করা হয়েছে','success');
+  }
+  closeModal('empOverlay');
+  renderEmpMgmt();
+  renderAtt();
+}
+function askDel(id){ S.delId=id; showModal('delOverlay'); }
+function confirmDel(){
+  S.employees=S.employees.filter(e=>e.id!==S.delId);
+  Object.keys(S.att).forEach(k=>{ if(k.startsWith(S.delId+'_')) delete S.att[k]; });
+  closeModal('delOverlay');
+  renderEmpMgmt();
+  renderAtt();
+  toast('🗑️ কর্মী মুছে ফেলা হয়েছে','danger');
+}
+
+/* ══════════════════════════════════════
+   HOLIDAYS
+══════════════════════════════════════ */
+function renderDayGrid(){
+  document.getElementById('dayGrid').innerHTML=DAYS.map((d,i)=>`
+    <div class="day-chip ${S.weekOff.includes(i)?'selected':''}" onclick="toggleDay(${i})">${d}</div>
+  `).join('');
+}
+function toggleDay(i){
+  const idx=S.weekOff.indexOf(i);
+  if(idx>=0) S.weekOff.splice(idx,1); else S.weekOff.push(i);
+  renderDayGrid();
+  toast('📅 সাপ্তাহিক ছুটি আপডেট','success');
+}
+function renderHolList(){
+  const el=document.getElementById('holList');
+  if(!S.pubHol.length){ el.innerHTML='<div class="empty-msg">এখনো কোনো বিশেষ ছুটি যোগ করা হয়নি</div>'; return; }
+  el.innerHTML=S.pubHol.sort((a,b)=>a.date.localeCompare(b.date)).map((h,i)=>`
+    <div class="holiday-item">
+      <div class="holiday-date">${fmtBDDate(h.date)}</div>
+      <div class="holiday-name">${h.name}</div>
+      <div class="hol-del" onclick="delHol(${i})"><i class="ti ti-trash"></i></div>
+    </div>`).join('');
+}
+function fmtBDDate(s){
+  const d=new Date(s);
+  return d.toLocaleDateString('bn-BD',{day:'numeric',month:'short',year:'2-digit'});
+}
+function addHoliday(){
+  const date=document.getElementById('hDate').value;
+  const name=document.getElementById('hName').value.trim();
+  if(!date||!name){ toast('তারিখ ও নাম দিন','danger'); return; }
+  if(S.pubHol.some(h=>h.date===date)){ toast('এই তারিখে ছুটি আছে','warning'); return; }
+  S.pubHol.push({date,name});
+  document.getElementById('hDate').value='';
+  document.getElementById('hName').value='';
+  renderHolList();
+  toast('🎉 ছুটি যোগ হয়েছে','success');
+}
+function delHol(i){ S.pubHol.splice(i,1); renderHolList(); toast('ছুটি মুছে ফেলা হয়েছে'); }
+
+/* ══════════════════════════════════════
+   REPORT
+══════════════════════════════════════ */
+let repM={year:new Date().getFullYear(), month:new Date().getMonth()};
+function initRepMonths(){
+  const sel=document.getElementById('repMonSel');
+  sel.innerHTML=MONTHS_BN.map((m,i)=>`<option value="${i}" ${i===repM.month?'selected':''}>${m} ${repM.year}</option>`).join('');
+}
+function chgMonth(d){
+  repM.month+=d;
+  if(repM.month>11){repM.month=0;repM.year++;}
+  if(repM.month<0){repM.month=11;repM.year--;}
+  initRepMonths();
+  renderReport();
+}
+function renderReport(){
+  const m=parseInt(document.getElementById('repMonSel').value);
+  repM.month=m;
+  const days=new Date(repM.year,m+1,0).getDate();
+  let html=`<thead><tr>
+    <th>কর্মী</th>
+    <th style="text-align:center">উপস্থিত</th>
+    <th style="text-align:center">অনুপস্থিত</th>
+    <th style="text-align:center">দেরিতে</th>
+    <th style="min-width:100px">হাজিরা %</th>
+  </tr></thead><tbody>`;
+  S.employees.forEach(emp=>{
+    let pr=0,ab=0,la=0,tot=0;
+    for(let d=1;d<=days;d++){
+      const ds=`${repM.year}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      if(!isOff(ds)){
+        tot++;
+        const at=getAtt(emp.id,ds);
+        if(at.status==='present') pr++;
+        else if(at.status==='late'){ pr++; la++; }
+        else if(at.status==='absent') ab++;
+      }
+    }
+    const pct=tot>0?Math.round((pr/tot)*100):0;
+    const barColor=pct>=80?'var(--success)':pct>=60?'var(--warning)':'var(--danger)';
+    const c=COLORS[emp.ci%COLORS.length];
+    html+=`<tr>
+      <td><div style="display:flex;align-items:center;gap:8px">
+        <div style="width:32px;height:32px;border-radius:9px;background:${c.bg};color:${c.fg};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">${initials(emp.name)}</div>
+        <div><div style="font-weight:700;font-size:13px">${emp.name}</div><div style="font-size:11px;color:var(--text3)">${emp.role}</div></div>
+      </div></td>
+      <td style="text-align:center;font-weight:700;color:var(--success)">${pr}</td>
+      <td style="text-align:center;font-weight:700;color:var(--danger)">${ab}</td>
+      <td style="text-align:center;font-weight:700;color:var(--warning)">${la}</td>
+      <td><div style="font-weight:700;font-size:13px;font-family:'JetBrains Mono',monospace">${pct}%</div>
+          <div class="pct-bar"><div class="pct-fill" style="width:${pct}%;background:${barColor}"></div></div></td>
+    </tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('repTable').innerHTML=html;
+}
+
+/* ══════════════════════════════════════
+   MODAL HELPERS
+══════════════════════════════════════ */
+function showModal(id){ document.getElementById(id).classList.add('show'); }
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o)o.classList.remove('show'); }));
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.overlay.show').forEach(o=>o.classList.remove('show')); });
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+let toastTimer;
+function toast(msg,type=''){
+  clearTimeout(toastTimer);
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.className='toast'+(type?' '+type:'');
+  void el.offsetWidth;
+  el.classList.add('show');
+  toastTimer=setTimeout(()=>el.classList.remove('show'),2800);
+}
+
+/* ── INIT ── */
+renderAtt();
+</script>
+</body>
+  </html>
